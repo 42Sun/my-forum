@@ -11,13 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class IndexController {
-    @Autowired
-    private UserMapper userMapper;
+    final UserMapper userMapper;
+    
+    public IndexController(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
+    
     
     @GetMapping("/")
     public String index(HttpServletRequest httpServletRequest) {
         Cookie[] cookies = httpServletRequest.getCookies();
-        
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("token")) {
                 String token = cookie.getValue();

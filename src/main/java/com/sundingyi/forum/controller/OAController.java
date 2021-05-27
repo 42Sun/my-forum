@@ -17,17 +17,20 @@ import java.util.UUID;
 
 @Controller
 public class OAController {
-    
-    @Autowired
-    private GithubProvider githubProvider;
+    final GithubProvider githubProvider;
+    final UserMapper userMapper;
     @Value("${github.client.id}")
     private String clientId;
     @Value("${github.client.secret}")
     private String clientSecret;
     @Value("${github.redirectUri}")
     private String redirectUri;
-    @Autowired
-    private UserMapper userMapper;
+    
+    public OAController(GithubProvider githubProvider, UserMapper userMapper) {
+        this.githubProvider = githubProvider;
+        this.userMapper = userMapper;
+    }
+    
     
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
