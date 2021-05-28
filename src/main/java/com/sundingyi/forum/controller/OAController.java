@@ -5,7 +5,6 @@ import com.sundingyi.forum.dto.GithubUser;
 import com.sundingyi.forum.mapper.UserMapper;
 import com.sundingyi.forum.model.User;
 import com.sundingyi.forum.provider.GithubProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +50,7 @@ public class OAController {
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
+            user.setAvatarUrl(githubUser.getAvatarUrl());
             userMapper.insert(user);
             
             httpServletResponse.addCookie(new Cookie("token", token));

@@ -20,18 +20,20 @@ public class IndexController {
     
     @GetMapping("/")
     public String index(HttpServletRequest httpServletRequest) {
-        Cookie[] cookies = httpServletRequest.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("token")) {
-                String token = cookie.getValue();
-                User user = userMapper.findByToken(token);
-                if (user != null) {
-                    httpServletRequest.getSession().setAttribute("githubUser", user);
+        if (httpServletRequest.getCookies() != null) {
+            Cookie[] cookies = httpServletRequest.getCookies();
+            for (Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName())) {
+                    String token = cookie.getValue();
+                    User user = userMapper.findByToken(token);
+                    if (user != null) {
+                        httpServletRequest.getSession().setAttribute("githubUser", user);
+                    }
+                    break;
                 }
-                break;
             }
         }
-        
+    
         return "index";
     }
 }

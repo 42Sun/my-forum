@@ -36,16 +36,25 @@ public class PublishController {
                             @RequestParam("tag") String tag,
                             HttpServletRequest httpServletRequest,
                             Model model) {
+        model.addAttribute("title", title);
+        model.addAttribute("description", description);
+        model.addAttribute("tag", tag);
+        if ("".equals(title) || "".equals(description) || "".equals(tag)) {
+            model.addAttribute("error", "请不要留空！");
+            return "publish";
+        }
         User user = null;
-        Cookie[] cookies = httpServletRequest.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("token")) {
-                String token = cookie.getValue();
-                user = userMapper.findByToken(token);
-                if (user != null) {
-                    httpServletRequest.getSession().setAttribute("githubUser", user);
+        if (httpServletRequest.getCookies() != null) {
+            Cookie[] cookies = httpServletRequest.getCookies();
+            for (Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName())) {
+                    String token = cookie.getValue();
+                    user = userMapper.findByToken(token);
+                    if (user != null) {
+                        httpServletRequest.getSession().setAttribute("githubUser", user);
+                    }
+                    break;
                 }
-                break;
             }
         }
         if (user == null) {
