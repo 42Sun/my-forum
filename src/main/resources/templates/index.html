@@ -2,12 +2,30 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
 <head>
     <title>forum.sundingyi.com</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <head th:insert="common :: head"></head>
 </head>
 <body>
 <div th:replace="common :: navbar"></div>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-xl-9 ">
+            <h2><i class="bi bi-pencil-square"></i> 发布问题</h2>
+            <hr>
+            <div class="d-flex" th:each="question : ${questions}">
+                <div class="flex-shrink-0">
+                    <img th:src="${question.user.avatarUrl}" height="50" width="50">
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <h5 th:text="${question.title}">标题</h5>
+                    <span class="text-desc">[[${question.user.name}]]  [[${question.commentCount}]]回复 [[${question.viewCount}]]浏览 [[${question.likeCount}]]点赞 [[${#dates.format(question.gmtCreate, 'dd/MMM/yyyy HH:mm')}]]</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-xl-3 ">
+            <h3>热门</h3>
+        </div>
+    </div>
+</div>
 </body>
 </html>
