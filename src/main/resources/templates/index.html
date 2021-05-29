@@ -49,7 +49,7 @@
                     </a>
                 </li>
                 <li class="page-item" th:if="${pagination.showLastPage == true}">
-                    <a class="page-link" href="#" aria-label="Last">
+                    <a class="page-link" href="#" th:href="@{/(page = ${pagination.totalPage})}" aria-label="Last">
                         <span aria-hidden="true">末页</span>
                     </a>
                 </li>
