@@ -43,20 +43,7 @@ public class PublishController {
             model.addAttribute("error", "请不要留空！");
             return "publish";
         }
-        User user = null;
-        if (httpServletRequest.getCookies() != null) {
-            Cookie[] cookies = httpServletRequest.getCookies();
-            for (Cookie cookie : cookies) {
-                if ("token".equals(cookie.getName())) {
-                    String token = cookie.getValue();
-                    user = userMapper.findByToken(token);
-                    if (user != null) {
-                        httpServletRequest.getSession().setAttribute("githubUser", user);
-                    }
-                    break;
-                }
-            }
-        }
+        User user = (User) httpServletRequest.getSession().getAttribute("githubUser");
         if (user == null) {
             model.addAttribute("error", "用户未登录");
             return "publish";
