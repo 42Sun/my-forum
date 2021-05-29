@@ -1,12 +1,15 @@
 package com.sundingyi.forum.controller;
 
+import com.sundingyi.forum.dto.PaginationDTO;
 import com.sundingyi.forum.dto.QuestionDTO;
 import com.sundingyi.forum.mapper.UserMapper;
 import com.sundingyi.forum.model.User;
 import com.sundingyi.forum.service.QuestionService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +28,9 @@ public class IndexController {
     
     @GetMapping("/")
     public String index(HttpServletRequest httpServletRequest,
-                        Model model) {
+                        Model model,
+                        @RequestParam(name = "page", defaultValue = "1") Integer page,
+                        @RequestParam(name = "size", defaultValue = "5") Integer size) {
         if (httpServletRequest.getCookies() != null) {
             Cookie[] cookies = httpServletRequest.getCookies();
             for (Cookie cookie : cookies) {
@@ -39,8 +44,8 @@ public class IndexController {
                 }
             }
         }
-        List<QuestionDTO> questionList = questionService.list();
-        model.addAttribute("questions", questionList);
+        PaginationDTO pagination = questionService.list(page, size);
+        model.addAttribute("pagination", pagination);
         return "index";
     }
 }

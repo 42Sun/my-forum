@@ -1,5 +1,6 @@
 package com.sundingyi.forum.service;
 
+import com.sundingyi.forum.dto.PaginationDTO;
 import com.sundingyi.forum.dto.QuestionDTO;
 import com.sundingyi.forum.mapper.QuestionMapper;
 import com.sundingyi.forum.mapper.UserMapper;
@@ -22,9 +23,11 @@ public class QuestionService {
         this.questionMapper = questionMapper;
     }
     
-    public List<QuestionDTO> list() {
-        List<Question> questions = questionMapper.list();
+    public PaginationDTO list(Integer page, Integer size) {
+        Integer offset = size * (page - 1);
+        List<Question> questions = questionMapper.list(offset, size);
         List<QuestionDTO> questionDTOS = new ArrayList<>();
+        PaginationDTO paginationDTO = new PaginationDTO();
         for (Question question : questions) {
             User user = userMapper.findById(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
@@ -32,6 +35,9 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOS.add(questionDTO);
         }
-        return questionDTOS;
+        paginationDTO.setQuestion(questionDTOS);
+        Integer totalCount = questionMapper.count();
+        paginationDTO.setPagination(totalCount, page, size);
+        return paginationDTO;
     }
 }
