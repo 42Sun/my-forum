@@ -2,4 +2,22 @@
     font-size: 12px;
     font-weight: normal;
     color: #999;
+    margin-top: 10px;
+}
+
+.d-flex {
+    padding: 10px;
+}
+
+.pagination {
+    padding: 10px;
+}
+
+.navbar {
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
+}
+
+.section {
+    margin-top: 55px;
 }

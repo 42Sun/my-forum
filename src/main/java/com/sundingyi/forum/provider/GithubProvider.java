@@ -32,7 +32,6 @@ public class GithubProvider {
             if (matcher.find()) {
                 result = matcher.group(0);
             }
-            System.out.println(result);
             return result;
         } catch (IOException e) {
             e.printStackTrace();

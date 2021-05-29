@@ -11,16 +11,15 @@
         <div class="col-xl-9 ">
             <h2><i class="bi bi-pencil-square"></i> 发布问题</h2>
             <hr>
-            <div class="d-flex" th:each="question : ${pagination.question}" style="border-bottom: 1px solid grey">
+            <div class="d-flex" th:each="question : ${pagination.question}" style="border-bottom: 1px solid #e2e2e2">
                 <div class="flex-shrink-0">
-                    <img th:src="${question.user.avatarUrl}" height="50" width="50">
+                    <img th:src="${question.user.avatarUrl}" height="55" width="55">
                 </div>
                 <div class="flex-grow-1 ms-3">
                     <h5 th:text="${question.title}">标题</h5>
                     <span class="text-desc">[[${question.user.name}]] ∙ [[${question.commentCount}]]回复 ∙ [[${question.viewCount}]]浏览 ∙ [[${question.likeCount}]]点赞 ∙ [[${#dates.format(question.gmtCreate, 'yyyy-MM-dd HH:mm')}]]</span>
                 </div>
             </div>
-
         </div>
         <div class="col-xl-3 ">
             <h3>热门</h3>
