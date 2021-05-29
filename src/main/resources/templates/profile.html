@@ -24,12 +24,13 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item" th:if="${pagination.showFirstPage == true}">
-                        <a class="page-link" href="/?page=1" aria-label="First">
+                        <a class="page-link" href="@{'/profile/'+${section}+'/?page=1'" aria-label="First">
                             <span aria-hidden="true">首页</span>
                         </a>
                     </li>
                     <li class="page-item" th:if="${pagination.showPrevious == true}">
-                        <a class="page-link" href="#" th:href="@{/(page = ${pagination.currentPage - 1})}"
+                        <a class="page-link" href="#"
+                           th:href="@{'/profile/'+${section}(page = ${pagination.currentPage - 1})}"
                            aria-label="Previous">
                             <span aria-hidden="true">上一页</span>
                         </a>
@@ -37,16 +38,18 @@
                     <li class="page-item"
                         th:class="${pagination.currentPage == page} ? 'page-item active' : 'page-item'"
                         th:each="page : ${pagination.pages}">
-                        <a class="page-link" href="#" th:href="@{/(page = ${page})}">[[${page}]]</a>
+                        <a class="page-link" href="#" th:href="@{'/profile/'+${section}(page=${page})}">[[${page}]]</a>
                     </li>
                     <li class="page-item" th:if="${pagination.showNext == true}">
-                        <a class="page-link" href="#" th:href="@{/(page = ${pagination.currentPage + 1})}"
+                        <a class="page-link" href="#"
+                           th:href="@{'/profile/'+${section}(page = ${pagination.currentPage + 1})}"
                            aria-label="Next">
                             <span aria-hidden="true">下一页</span>
                         </a>
                     </li>
                     <li class="page-item" th:if="${pagination.showLastPage == true}">
-                        <a class="page-link" href="#" th:href="@{/(page = ${pagination.totalPage})}" aria-label="Last">
+                        <a class="page-link" href="#"
+                           th:href="@{'/profile/'+${section}(page = ${pagination.totalPage})}" aria-label="Last">
                             <span aria-hidden="true">末页</span>
                         </a>
                     </li>
