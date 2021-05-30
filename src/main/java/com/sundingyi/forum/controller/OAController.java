@@ -2,9 +2,9 @@ package com.sundingyi.forum.controller;
 
 import com.sundingyi.forum.dto.AccessTokenDTO;
 import com.sundingyi.forum.dto.GithubUser;
-import com.sundingyi.forum.mapper.UserMapper;
 import com.sundingyi.forum.model.User;
 import com.sundingyi.forum.provider.GithubProvider;
+import com.sundingyi.forum.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +16,8 @@ import java.util.UUID;
 
 @Controller
 public class OAController {
-    final GithubProvider githubProvider;
-    final UserMapper userMapper;
+    private final GithubProvider githubProvider;
+    private final UserService userService;
     @Value("${github.client.id}")
     private String clientId;
     @Value("${github.client.secret}")
@@ -25,9 +25,9 @@ public class OAController {
     @Value("${github.redirectUri}")
     private String redirectUri;
     
-    public OAController(GithubProvider githubProvider, UserMapper userMapper) {
+    public OAController(GithubProvider githubProvider, UserService userService) {
         this.githubProvider = githubProvider;
-        this.userMapper = userMapper;
+        this.userService = userService;
     }
     
     
@@ -48,10 +48,8 @@ public class OAController {
             user.setToken(token);
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(githubUser.getAvatarUrl());
-            userMapper.insert(user);
+            userService.createOrUpdate(user);
             
             httpServletResponse.addCookie(new Cookie("token", token));
             return "redirect:/";
