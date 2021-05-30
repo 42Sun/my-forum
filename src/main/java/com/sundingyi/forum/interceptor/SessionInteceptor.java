@@ -2,12 +2,8 @@ package com.sundingyi.forum.interceptor;
 
 import com.sundingyi.forum.mapper.UserMapper;
 import com.sundingyi.forum.model.User;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

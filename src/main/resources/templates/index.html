@@ -16,7 +16,9 @@
                     <img th:src="${question.user.avatarUrl}" height="55" width="55">
                 </div>
                 <div class="flex-grow-1 ms-3">
-                    <h5 th:text="${question.title}">标题</h5>
+                    <h5>
+                        <a th:href="@{'/question/'+${question.id}}" th:text="${question.title}"></a>
+                    </h5>
                     <span class="text-desc">[[${question.user.name}]] ∙ [[${question.commentCount}]]回复 ∙ [[${question.viewCount}]]浏览 ∙ [[${question.likeCount}]]点赞 ∙ [[${#dates.format(question.gmtCreate, 'yyyy-MM-dd HH:mm')}]]</span>
                 </div>
             </div>

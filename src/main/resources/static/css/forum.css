@@ -21,3 +21,8 @@
 .section {
     margin-top: 55px;
 }
+
+a {
+    color: #198754;
+    text-decoration-line: none;
+}

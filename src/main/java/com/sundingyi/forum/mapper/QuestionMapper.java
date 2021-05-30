@@ -1,13 +1,11 @@
 package com.sundingyi.forum.mapper;
 
-import com.sundingyi.forum.dto.QuestionDTO;
 import com.sundingyi.forum.model.Question;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
-import java.nio.channels.InterruptedByTimeoutException;
 import java.util.List;
 
 @Repository
@@ -27,4 +25,7 @@ public interface QuestionMapper {
     
     @Select("select count(*) from question where creator = #{id}")
     Integer countById(Long id);
+    
+    @Select("select * from question where id = #{id}")
+    Question getById(Long id);
 }

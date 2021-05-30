@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${question.title}">title</title>
+    <head th:insert="common :: head"></head>
+</head>
+<body>
+<div th:replace="common :: navbar"></div>
+<div class="container mt-3 profile">
+    <div class="row">
+        <div class="col-xl-9 ">
+            <h2><i class="bi bi-pencil-square"></i> [[${question.title}]]</h2>
+            <span class="text-desc">
+                [[${question.commentCount}]]回复 ∙ [[${question.viewCount}]]浏览 ∙ [[${question.likeCount}]]点赞 ∙ [[${#dates.format(question.gmtCreate, 'yyyy-MM-dd HH:mm')}]]
+            </span>
+            <hr>
+            <div class="col-xl-12 ">
+                [[${question.description}]]
+            </div>
+            <hr>
+            <a th:href="@{'/publish/' + ${question.id}}"> <i class="bi bi-pencil"></i>修改</a>
+        </div>
+        <div class="col-xl-3 ">
+            <div class="col-xl-12 ">
+                <h3>作者</h3>
+                <img th:src="${question.user.avatarUrl}" height="55" width="55">
+                [[${question.user.name}]] ∙
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
