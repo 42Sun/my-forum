@@ -5,7 +5,9 @@ import com.sundingyi.forum.dto.QuestionDTO;
 import com.sundingyi.forum.mapper.QuestionMapper;
 import com.sundingyi.forum.mapper.UserMapper;
 import com.sundingyi.forum.model.Question;
+import com.sundingyi.forum.model.QuestionExample;
 import com.sundingyi.forum.model.User;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -25,45 +27,47 @@ public class QuestionService {
     
     public PaginationDTO list(Integer page, Integer size) {
         Integer offset = size * (page - 1);
-        List<Question> questions = questionMapper.list(offset, size);
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         PaginationDTO paginationDTO = new PaginationDTO();
         for (Question question : questions) {
-            User user = userMapper.findById(question.getCreator());
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
             questionDTOS.add(questionDTO);
         }
         paginationDTO.setQuestion(questionDTOS);
-        Integer totalCount = questionMapper.count();
+        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
         paginationDTO.setPagination(totalCount, page, size);
         return paginationDTO;
     }
     
-    public PaginationDTO list(Long id, Integer page, Integer size) {
+    public PaginationDTO list(Integer id, Integer page, Integer size) {
         Integer offset = size * (page - 1);
-        List<Question> questions = questionMapper.listById(id, offset, size);
+        QuestionExample example = new QuestionExample();
+        example.createCriteria().andIdEqualTo(id);
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example, new RowBounds(offset, size));
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         PaginationDTO paginationDTO = new PaginationDTO();
         for (Question question : questions) {
-            User user = userMapper.findById(question.getCreator());
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
             questionDTOS.add(questionDTO);
         }
         paginationDTO.setQuestion(questionDTOS);
-        Integer totalCount = questionMapper.countById(id);
+        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
         paginationDTO.setPagination(totalCount, page, size);
         return paginationDTO;
     }
     
-    public QuestionDTO getById(Long id) {
-        Question question = questionMapper.getById(id);
+    public QuestionDTO getById(Integer id) {
+        Question question = questionMapper.selectByPrimaryKey(id);
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
-        questionDTO.setUser(userMapper.findById(questionDTO.getCreator()));
+        questionDTO.setUser(userMapper.selectByPrimaryKey((int) questionDTO.getCreator()));
         return questionDTO;
     }
     
@@ -71,10 +75,16 @@ public class QuestionService {
         if (question.getId() == 0) { // 创建
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
-            questionMapper.create(question);
+            questionMapper.insert(question);
         } else { // 更新
-            question.setGmtModified(System.currentTimeMillis());
-            questionMapper.update(question);
+            Question record = new Question();
+            record.setGmtModified(System.currentTimeMillis());
+            record.setTitle(question.getTitle());
+            record.setDescription(question.getDescription());
+            record.setTag(question.getTag());
+            QuestionExample example = new QuestionExample();
+            example.createCriteria().andIdEqualTo(question.getId());
+            questionMapper.updateByExampleSelective(record, example);
         }
     }
 }
