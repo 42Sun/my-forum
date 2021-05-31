@@ -46,7 +46,7 @@ public class QuestionService {
     public PaginationDTO list(Integer id, Integer page, Integer size) {
         Integer offset = size * (page - 1);
         QuestionExample example = new QuestionExample();
-        example.createCriteria().andIdEqualTo(id);
+        example.createCriteria().andCreatorEqualTo(id);
         List<Question> questions = questionMapper.selectByExampleWithRowbounds(example, new RowBounds(offset, size));
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         PaginationDTO paginationDTO = new PaginationDTO();
@@ -58,7 +58,9 @@ public class QuestionService {
             questionDTOS.add(questionDTO);
         }
         paginationDTO.setQuestion(questionDTOS);
-        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
+        QuestionExample example1 = new QuestionExample();
+        example1.createCriteria().andCreatorEqualTo(id);
+        Integer totalCount = (int) questionMapper.countByExample(example1);
         paginationDTO.setPagination(totalCount, page, size);
         return paginationDTO;
     }
@@ -72,7 +74,7 @@ public class QuestionService {
     }
     
     public void createOrUpdate(Question question) {
-        if (question.getId() == 0) { // 创建
+        if (question.getId() == null) { // 创建
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
             questionMapper.insert(question);
