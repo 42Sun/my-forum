@@ -1,7 +1,6 @@
 package com.sundingyi.forum.controller;
 
 import com.sundingyi.forum.dto.QuestionDTO;
-import com.sundingyi.forum.mapper.UserMapper;
 import com.sundingyi.forum.model.Question;
 import com.sundingyi.forum.model.User;
 import com.sundingyi.forum.service.QuestionService;
@@ -16,11 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class PublishController {
-    private final UserMapper userMapper;
     private final QuestionService questionService;
     
-    public PublishController(UserMapper userMapper, QuestionService questionService) {
-        this.userMapper = userMapper;
+    public PublishController(QuestionService questionService) {
         this.questionService = questionService;
     }
     

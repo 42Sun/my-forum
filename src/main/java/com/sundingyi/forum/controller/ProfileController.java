@@ -1,7 +1,6 @@
 package com.sundingyi.forum.controller;
 
 import com.sundingyi.forum.dto.PaginationDTO;
-import com.sundingyi.forum.mapper.UserMapper;
 import com.sundingyi.forum.model.User;
 import com.sundingyi.forum.service.QuestionService;
 import org.springframework.stereotype.Controller;
@@ -14,13 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class ProfileController {
-    final UserMapper userMapper;
     final QuestionService questionService;
     
-    public ProfileController(UserMapper userMapper, QuestionService questionService) {
-        this.userMapper = userMapper;
+    public ProfileController(QuestionService questionService) {
         this.questionService = questionService;
     }
+    
     
     @GetMapping("/profile/{action}")
     public String profile(@PathVariable("action") String action,
