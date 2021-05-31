@@ -12,6 +12,7 @@
             <h2><i class="bi bi-pencil-square"></i> 发布问题</h2>
             <hr>
             <form action="/publish" method="post">
+                <input type="hidden" name="id" th:value="${id}">
                 <div class="mb-3">
                     <label for="title" class="form-label">标题</label>
                     <input type="text" class="form-control" id="title" name="title" th:value="${title}"

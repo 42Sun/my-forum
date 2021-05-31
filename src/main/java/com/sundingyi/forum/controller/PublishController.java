@@ -1,12 +1,14 @@
 package com.sundingyi.forum.controller;
 
-import com.sundingyi.forum.mapper.QuestionMapper;
+import com.sundingyi.forum.dto.QuestionDTO;
 import com.sundingyi.forum.mapper.UserMapper;
 import com.sundingyi.forum.model.Question;
 import com.sundingyi.forum.model.User;
+import com.sundingyi.forum.service.QuestionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -14,12 +16,12 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class PublishController {
-    final QuestionMapper questionMapper;
-    final UserMapper userMapper;
+    private final UserMapper userMapper;
+    private final QuestionService questionService;
     
-    public PublishController(QuestionMapper questionMapper, UserMapper userMapper) {
-        this.questionMapper = questionMapper;
+    public PublishController(UserMapper userMapper, QuestionService questionService) {
         this.userMapper = userMapper;
+        this.questionService = questionService;
     }
     
     
@@ -32,6 +34,7 @@ public class PublishController {
     public String doPublish(@RequestParam("title") String title,
                             @RequestParam("description") String description,
                             @RequestParam("tag") String tag,
+                            @RequestParam(name = "id", required = false) Long id,
                             HttpServletRequest httpServletRequest,
                             Model model) {
         model.addAttribute("title", title);
@@ -51,12 +54,20 @@ public class PublishController {
         question.setDescription(description);
         question.setTag(tag);
         question.setCreator(user.getId());
-        question.setGmtCreate(System.currentTimeMillis());
-        question.setGmtModified(question.getGmtCreate());
-        
-        
-        questionMapper.create(question);
-        
+        question.setId(id);
+        questionService.createOrUpdate(question);
+    
         return "redirect:/";
+    }
+    
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable("id") Long id,
+                       Model model) {
+        QuestionDTO question = questionService.getById(id);
+        model.addAttribute("title", question.getTitle());
+        model.addAttribute("description", question.getDescription());
+        model.addAttribute("tag", question.getTag());
+        model.addAttribute("id", id);
+        return "publish";
     }
 }
