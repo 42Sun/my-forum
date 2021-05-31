@@ -12,7 +12,6 @@
                         userId=""
                         password="">
         </jdbcConnection>
-
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
@@ -32,6 +31,5 @@
 
         <table tableName="USER" domainObjectName="User"/>
         <table tableName="Question" domainObjectName="Question"/>
-
     </context>
 </generatorConfiguration>
