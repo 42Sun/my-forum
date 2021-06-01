@@ -94,4 +94,10 @@ public class QuestionService {
             questionMapper.updateByExampleSelective(record, example);
         }
     }
+    
+    public void increaseView(Integer id) {
+        Question dbQuestion = questionMapper.selectByPrimaryKey(id);
+        dbQuestion.setViewCount(dbQuestion.getViewCount() + 1);
+        questionMapper.updateByPrimaryKey(dbQuestion);
+    }
 }
