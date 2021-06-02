@@ -2,6 +2,8 @@ package com.sundingyi.forum.service;
 
 import com.sundingyi.forum.dto.PaginationDTO;
 import com.sundingyi.forum.dto.QuestionDTO;
+import com.sundingyi.forum.exception.CustomizeErrorCode;
+import com.sundingyi.forum.exception.CustomizeException;
 import com.sundingyi.forum.mapper.QuestionMapper;
 import com.sundingyi.forum.mapper.UserMapper;
 import com.sundingyi.forum.model.Question;
@@ -69,6 +71,9 @@ public class QuestionService {
     
     public QuestionDTO getById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
+        if (question == null) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
         questionDTO.setUser(userMapper.selectByPrimaryKey((int) questionDTO.getCreator()));
@@ -98,6 +103,9 @@ public class QuestionService {
     public void increaseView(Integer id) {
         Question dbQuestion = questionMapper.selectByPrimaryKey(id);
         dbQuestion.setViewCount(dbQuestion.getViewCount() + 1);
-        questionMapper.updateByPrimaryKey(dbQuestion);
+        int updated = questionMapper.updateByPrimaryKey(dbQuestion);
+        if (updated != 1) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
     }
 }

@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
+<head>
+    <title>=错误</title>
+    <head th:insert="common :: head"></head>
+</head>
+<body>
+<div th:replace="common :: navbar"></div>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-xl-12 ">
+            <h2> 错误</h2>
+            <hr>
+            <p th:text="${message}">默认</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
