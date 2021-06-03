@@ -47,7 +47,7 @@ public class QuestionService {
         return paginationDTO;
     }
     
-    public PaginationDTO list(Integer id, Integer page, Integer size) {
+    public PaginationDTO list(Long id, Integer page, Integer size) {
         Integer offset = size * (page - 1);
         QuestionExample example = new QuestionExample();
         example.createCriteria().andCreatorEqualTo(id);
@@ -69,14 +69,14 @@ public class QuestionService {
         return paginationDTO;
     }
     
-    public QuestionDTO getById(Integer id) {
+    public QuestionDTO getById(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
         if (question == null) {
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
-        questionDTO.setUser(userMapper.selectByPrimaryKey((int) questionDTO.getCreator()));
+        questionDTO.setUser(userMapper.selectByPrimaryKey(questionDTO.getCreator()));
         return questionDTO;
     }
     
@@ -100,7 +100,7 @@ public class QuestionService {
         }
     }
     
-    public void increaseView(Integer id) {
+    public void increaseView(Long id) {
         Question dbQuestion = questionMapper.selectByPrimaryKey(id);
         dbQuestion.setViewCount(dbQuestion.getViewCount() + 1);
         int updated = questionMapper.updateByPrimaryKey(dbQuestion);
