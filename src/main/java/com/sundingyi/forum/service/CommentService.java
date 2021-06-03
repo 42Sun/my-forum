@@ -50,7 +50,7 @@ public class CommentService {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
             commentMapper.insert(comment);
-            myMapper.updateQuestionCommentCountById(comment.getId());
+            myMapper.updateQuestionCommentCountById(comment.getParentId());
         }
     }
 }
