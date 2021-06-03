@@ -4,19 +4,24 @@ import com.sundingyi.forum.enums.CommentTypeEnum;
 import com.sundingyi.forum.exception.CustomizeErrorCode;
 import com.sundingyi.forum.exception.CustomizeException;
 import com.sundingyi.forum.mapper.CommentMapper;
+import com.sundingyi.forum.mapper.MyMapper;
 import com.sundingyi.forum.mapper.QuestionMapper;
 import com.sundingyi.forum.model.Comment;
+import com.sundingyi.forum.model.Question;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CommentService {
     private final CommentMapper commentMapper;
     private final QuestionMapper questionMapper;
+    private final MyMapper myMapper;
     
-    public CommentService(CommentMapper commentMapper, QuestionMapper questionMapper) {
+    public CommentService(CommentMapper commentMapper, QuestionMapper questionMapper, MyMapper myMapper) {
         this.commentMapper = commentMapper;
         this.questionMapper = questionMapper;
+        this.myMapper = myMapper;
     }
+    
     
     public void insert(Comment comment) {
         // 父级错误
@@ -40,7 +45,12 @@ public class CommentService {
             
         } else {
             // 回复问题
-            questionMapper.selectByPrimaryKey(comment.getParentId());
+            Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
+            if (question == null) {
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
+            commentMapper.insert(comment);
+            myMapper.updateQuestionCommentCountById(comment.getId());
         }
     }
 }

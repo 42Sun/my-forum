@@ -4,6 +4,7 @@ import com.sundingyi.forum.dto.PaginationDTO;
 import com.sundingyi.forum.dto.QuestionDTO;
 import com.sundingyi.forum.exception.CustomizeErrorCode;
 import com.sundingyi.forum.exception.CustomizeException;
+import com.sundingyi.forum.mapper.MyMapper;
 import com.sundingyi.forum.mapper.QuestionMapper;
 import com.sundingyi.forum.mapper.UserMapper;
 import com.sundingyi.forum.model.Question;
@@ -19,13 +20,16 @@ import java.util.List;
 @Service
 public class QuestionService {
     
-    final UserMapper userMapper;
-    final QuestionMapper questionMapper;
+    private final UserMapper userMapper;
+    private final QuestionMapper questionMapper;
+    private final MyMapper myMapper;
     
-    public QuestionService(UserMapper userMapper, QuestionMapper questionMapper) {
+    public QuestionService(UserMapper userMapper, QuestionMapper questionMapper, MyMapper myMapper) {
         this.userMapper = userMapper;
         this.questionMapper = questionMapper;
+        this.myMapper = myMapper;
     }
+    
     
     public PaginationDTO list(Integer page, Integer size) {
         Integer offset = size * (page - 1);
@@ -101,11 +105,10 @@ public class QuestionService {
     }
     
     public void increaseView(Long id) {
-        Question dbQuestion = questionMapper.selectByPrimaryKey(id);
-        dbQuestion.setViewCount(dbQuestion.getViewCount() + 1);
-        int updated = questionMapper.updateByPrimaryKey(dbQuestion);
-        if (updated != 1) {
+        Question question = questionMapper.selectByPrimaryKey(id);
+        if (question == null) {
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
+        myMapper.updateQuestionViewCountById(id);
     }
 }
