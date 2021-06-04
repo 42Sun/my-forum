@@ -9,6 +9,7 @@ import com.sundingyi.forum.mapper.QuestionMapper;
 import com.sundingyi.forum.model.Comment;
 import com.sundingyi.forum.model.Question;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CommentService {
@@ -22,7 +23,7 @@ public class CommentService {
         this.myMapper = myMapper;
     }
     
-    
+    @Transactional
     public void insert(Comment comment) {
         // 父级错误
         if (comment.getParentId() == null || comment.getParentId() == 0) {

@@ -18,9 +18,15 @@
             <div class="col-xl-12 ">
                 [[${question.description}]]
             </div>
-            <hr>
             <a th:if="${session.githubUser != null && session.githubUser.id == question.creator}"
                th:href="@{'/publish/' + ${question.id}}"> <i class="bi bi-pencil"></i>修改</a>
+            <hr>
+            <input type="hidden" id="question_id" th:value="${question.id}">
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label" onclick="post()">回复</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            <button type="button" class="btn btn-success">提交</button>
         </div>
         <div class="col-xl-3 ">
             <div class="col-xl-12 ">
