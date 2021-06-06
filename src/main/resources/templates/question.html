@@ -22,11 +22,11 @@
                th:href="@{'/publish/' + ${question.id}}"> <i class="bi bi-pencil"></i>修改</a>
             <hr>
             <input type="hidden" id="question_id" th:value="${question.id}">
-            <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label" onclick="post()">回复</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <div class="mb-3" id="comment_section">
+                <label for="comment_content" class="form-label">回复</label>
+                <textarea class="form-control" id="comment_content" rows="3"></textarea>
             </div>
-            <button type="button" class="btn btn-success">提交</button>
+            <button type="button" class="btn btn-success" onclick="post()">提交</button>
         </div>
         <div class="col-xl-3 ">
             <div class="col-xl-12 ">
