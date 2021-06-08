@@ -21,6 +21,16 @@
             <a th:if="${session.githubUser != null && session.githubUser.id == question.creator}"
                th:href="@{'/publish/' + ${question.id}}"> <i class="bi bi-pencil"></i>修改</a>
             <hr>
+            <div class="d-flex" th:each="comment : ${comments}" style="border-bottom: 1px solid #e2e2e2">
+                <div class="flex-shrink-0">
+                    <img th:src="${comment.user.avatarUrl}" height="55" width="55">
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <h5 th:text="${comment.user.name}"></h5>
+                    <p th:text="${comment.content}"></p>
+                    <a href="">赞</a> <a href="">回复</a>
+                </div>
+            </div>
             <input type="hidden" id="question_id" th:value="${question.id}">
             <div class="mb-3" id="comment_section">
                 <label for="comment_content" class="form-label">回复</label>

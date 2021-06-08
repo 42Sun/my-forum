@@ -1,6 +1,6 @@
 package com.sundingyi.forum.controller;
 
-import com.sundingyi.forum.dto.CommentDTO;
+import com.sundingyi.forum.dto.CommentCreateDTO;
 import com.sundingyi.forum.dto.ResultDTO;
 import com.sundingyi.forum.exception.CustomizeErrorCode;
 import com.sundingyi.forum.mapper.CommentMapper;
@@ -26,24 +26,24 @@ public class CommentController {
     
     @ResponseBody
     @PostMapping("/comment")
-    public Object post(@RequestBody CommentDTO commentDTO,
+    public Object post(@RequestBody CommentCreateDTO commentCreateDTO,
                        HttpServletRequest request) {
         
         User user = (User) request.getSession().getAttribute("githubUser");
         if (user == null) {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
         }
-    
+        
         Comment comment = new Comment();
-        comment.setParentId(commentDTO.getParentId());
-        comment.setContent(commentDTO.getContent());
-        comment.setType(commentDTO.getType());
+        comment.setParentId(commentCreateDTO.getParentId());
+        comment.setContent(commentCreateDTO.getContent());
+        comment.setType(commentCreateDTO.getType());
         comment.setGmtCreat(System.currentTimeMillis());
         comment.setGmtModified(comment.getGmtCreat());
         comment.setCommentator(user.getId());
         comment.setLikeCount(0L);
         commentService.insert(comment);
-    
+        
         return ResultDTO.okOf();
     }
 }
