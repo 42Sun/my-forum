@@ -14,9 +14,12 @@ function post() {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (response) {
-            alert(response.message)
+            if (response.code === 200) {
+                location.reload()
+            } else {
+                alert(response.message)
+            }
         }
     })
     ;
-
 }
