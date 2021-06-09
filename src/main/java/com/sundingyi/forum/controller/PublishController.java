@@ -31,6 +31,7 @@ public class PublishController {
     public String doPublish(@RequestParam("title") String title,
                             @RequestParam("description") String description,
                             @RequestParam("tag") String tag,
+                            @RequestParam(name = "id", required = false) Long id,
                             HttpServletRequest httpServletRequest,
                             Model model) {
         model.addAttribute("title", title);
@@ -50,6 +51,7 @@ public class PublishController {
         question.setDescription(description);
         question.setTag(tag);
         question.setCreator(user.getId());
+        question.setId(id);
         questionService.createOrUpdate(question);
     
         return "redirect:/";

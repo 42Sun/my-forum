@@ -23,6 +23,11 @@
 }
 
 a {
-    color: #198754;
-    text-decoration-line: none;
+    color: black;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #999999;
+    text-decoration: underline;
 }

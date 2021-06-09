@@ -26,9 +26,47 @@
                     <img th:src="${comment.user.avatarUrl}" height="55" width="55">
                 </div>
                 <div class="flex-grow-1 ms-3">
-                    <h5 th:text="${comment.user.name}"></h5>
+                    <span th:text="${comment.user.name}"></span>
+                    <span class="text-desc">[[${#dates.format(comment.gmtCreat, 'yyyy-MM-dd HH:mm')}]]</span>
                     <p th:text="${comment.content}"></p>
-                    <a href="">赞</a> <a href="">回复</a>
+                    <a href="">赞</a>
+                    <p>
+                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                                th:data-bs-target="'#collapse' + ${comment.id}" aria-expanded="false"
+                                th:aria-controls="'collapse' + ${comment.id}">
+                            回复
+                        </button>
+                    </p>
+                    <!--                   二级回复开始-->
+                    <div class="in collapse show" th:id="'collapse' + ${comment.id}">
+                        <div class="card card-body">
+                            <div class="d-flex" th:each="comment : ${comments}"
+                                 style="border-bottom: 1px solid #e2e2e2">
+                                <div class="flex-shrink-0">
+                                    <img th:src="${comment.user.avatarUrl}" height="55" width="55">
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <span th:text="${comment.user.name}"></span>
+                                    <span class="text-desc">[[${#dates.format(comment.gmtCreat, 'yyyy-MM-dd HH:mm')}]]</span>
+                                    <p th:text="${comment.content}"></p>
+                                    <a href="">赞</a>
+                                    <p>
+                                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                                                th:data-bs-target="'#collapse' + ${comment.id}" aria-expanded="false"
+                                                th:aria-controls="'collapse' + ${comment.id}">
+                                            回复
+                                        </button>
+                                    </p>
+                                </div>
+                            </div>
+                            <input type="hidden" id="question_id" th:value="${question.id}">
+                            <div class="mb-3" id="comment_section">
+                                <label for="comment_content" class="form-label">回复</label>
+                                <textarea class="form-control" id="comment_content" rows="3"></textarea>
+                            </div>
+                            <button type="button" class="btn btn-success" onclick="post()">提交</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <input type="hidden" id="question_id" th:value="${question.id}">

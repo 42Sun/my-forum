@@ -7,6 +7,7 @@ import com.sundingyi.forum.mapper.CommentMapper;
 import com.sundingyi.forum.model.Comment;
 import com.sundingyi.forum.model.User;
 import com.sundingyi.forum.service.CommentService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,12 +29,14 @@ public class CommentController {
     @PostMapping("/comment")
     public Object post(@RequestBody CommentCreateDTO commentCreateDTO,
                        HttpServletRequest request) {
-        
+    
         User user = (User) request.getSession().getAttribute("githubUser");
         if (user == null) {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
         }
-        
+        if (commentCreateDTO == null || StringUtils.isBlank(commentCreateDTO.getContent())) {
+            return ResultDTO.errorOf(CustomizeErrorCode.CONTENT_IS_EMPTY);
+        }
         Comment comment = new Comment();
         comment.setParentId(commentCreateDTO.getParentId());
         comment.setContent(commentCreateDTO.getContent());
