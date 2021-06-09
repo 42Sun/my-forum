@@ -35,11 +35,14 @@ public class QuestionController {
         questionService.increaseView(id);
         QuestionDTO questionDTO = questionService.getById(id);
         List<CommentDTO> comments = commentService.listByIdAndType(id, CommentTypeEnum.QUESTION);
-        List<Long> idList = comments.stream().map(CommentDTO::getId).collect(Collectors.toList());
-        List<CommentDTO> subComments = commentService.listByIdListAndType(idList, CommentTypeEnum.COMMENT);
+        if (comments != null) {
+            List<Long> idList = comments.stream().map(CommentDTO::getId).collect(Collectors.toList());
+            List<CommentDTO> subComments = commentService.listByIdListAndType(idList, CommentTypeEnum.COMMENT);
+            model.addAttribute("subComments", subComments);
+        }
         model.addAttribute("question", questionDTO);
         model.addAttribute("comments", comments);
-        model.addAttribute("subComments", subComments);
+    
         return "question";
     }
 }
