@@ -60,12 +60,14 @@
                                     </p>
                                 </div>
                             </div>
-                            <input type="hidden" id="question_id" th:value="${question.id}">
-                            <div class="mb-3" id="comment_section">
+                            <input type="hidden" th:id="'comment' + ${comment.id}" th:value="${comment.id}">
+                            <div class="mb-3" id="subcomment_section">
                                 <label for="comment_content" class="form-label">回复</label>
-                                <textarea class="form-control" id="comment_content" rows="3"></textarea>
+                                <textarea class="form-control" th:id="'content' + ${comment.id}" rows="3"></textarea>
                             </div>
-                            <button type="button" class="btn btn-success" onclick="post()">提交</button>
+                            <button type="button" class="btn btn-success" th:onclick="'subPost(' + ${comment.id} + ')'">
+                                提交
+                            </button>
                         </div>
                     </div>
                 </div>

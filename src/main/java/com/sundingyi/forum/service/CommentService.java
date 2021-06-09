@@ -48,7 +48,7 @@ public class CommentService {
         
         if (comment.getType().equals(CommentTypeEnum.COMMENT.getType())) {
             // 回复评论
-            Comment dbComment = commentMapper.selectByPrimaryKey(comment.getId());
+            Comment dbComment = commentMapper.selectByPrimaryKey(comment.getParentId());
             // 若数据库中不存在
             if (dbComment == null) {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
