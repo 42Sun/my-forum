@@ -66,9 +66,9 @@ public class CommentService {
         }
     }
     
-    public List<CommentDTO> listByQuestionId(Long id) {
+    public List<CommentDTO> listByIdAndType(Long id, CommentTypeEnum typeEnum) {
         CommentExample commentExample = new CommentExample();
-        commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+        commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(typeEnum.getType());
         List<Comment> comments = commentMapper.selectByExampleWithBLOBs(commentExample);
         if (comments.size() == 0) {
             return null;
@@ -85,6 +85,26 @@ public class CommentService {
             return commentDTO;
         }).collect(Collectors.toList());
         return commentDTOS;
-        
+    }
+    
+    public List<CommentDTO> listByIdListAndType(List<Long> idList, CommentTypeEnum typeEnum) {
+        CommentExample commentExample = new CommentExample();
+        commentExample.createCriteria().andParentIdIn(idList).andTypeEqualTo(typeEnum.getType());
+        List<Comment> comments = commentMapper.selectByExampleWithBLOBs(commentExample);
+        if (comments.size() == 0) {
+            return null;
+        }
+        Set<Long> commentator = comments.stream().map(comment -> comment.getCommentator()).collect(Collectors.toSet());
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andIdIn(new ArrayList<>(commentator));
+        List<User> users = userMapper.selectByExample(userExample);
+        Map<Long, User> userMap = users.stream().collect(Collectors.toMap(user -> user.getId(), user -> user));
+        List<CommentDTO> commentDTOS = comments.stream().map(comment -> {
+            CommentDTO commentDTO = new CommentDTO();
+            BeanUtils.copyProperties(comment, commentDTO);
+            commentDTO.setUser(userMap.get(comment.getCommentator()));
+            return commentDTO;
+        }).collect(Collectors.toList());
+        return commentDTOS;
     }
 }

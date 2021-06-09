@@ -2,6 +2,7 @@ package com.sundingyi.forum.controller;
 
 import com.sundingyi.forum.dto.CommentDTO;
 import com.sundingyi.forum.dto.QuestionDTO;
+import com.sundingyi.forum.enums.CommentTypeEnum;
 import com.sundingyi.forum.service.CommentService;
 import com.sundingyi.forum.service.QuestionService;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class QuestionController {
@@ -32,9 +34,12 @@ public class QuestionController {
         // 累加阅读数
         questionService.increaseView(id);
         QuestionDTO questionDTO = questionService.getById(id);
-        List<CommentDTO> comments = commentService.listByQuestionId(id);
+        List<CommentDTO> comments = commentService.listByIdAndType(id, CommentTypeEnum.QUESTION);
+        List<Long> idList = comments.stream().map(CommentDTO::getId).collect(Collectors.toList());
+        List<CommentDTO> subComments = commentService.listByIdListAndType(idList, CommentTypeEnum.COMMENT);
         model.addAttribute("question", questionDTO);
         model.addAttribute("comments", comments);
+        model.addAttribute("subComments", subComments);
         return "question";
     }
 }
