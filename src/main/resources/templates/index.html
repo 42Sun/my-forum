@@ -11,7 +11,7 @@
         <div class="col-xl-9 ">
             <h2><i class="bi bi-pencil-square"></i> 发布问题</h2>
             <hr>
-            <div class="d-flex" th:each="question : ${pagination.question}" style="border-bottom: 1px solid #e2e2e2">
+            <div class="d-flex" th:each="question : ${pagination.getData}" style="border-bottom: 1px solid #e2e2e2">
                 <div class="flex-shrink-0">
                     <img th:src="${question.user.avatarUrl}" height="55" width="55">
                 </div>

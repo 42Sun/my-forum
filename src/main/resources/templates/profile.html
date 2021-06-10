@@ -12,51 +12,57 @@
         <div class="col-xl-9 ">
             <h2><i class="bi bi-pencil-square"></i> [[${sectionName}]]</h2>
             <hr>
-            <div class="d-flex" th:each="question : ${pagination.question}" style="border-bottom: 1px solid #e2e2e2">
-                <div class="flex-shrink-0">
-                    <img th:src="${question.user.avatarUrl}" height="55" width="55" alt="avatar">
+            <div class="col-xl-12 " th:if="${section == 'questions'}">
+                <div class="d-flex" th:each="question : ${pagination.getData}" style="border-bottom: 1px solid #e2e2e2">
+                    <div class="flex-shrink-0">
+                        <img th:src="${question.user.avatarUrl}" height="55" width="55" alt="avatar">
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5>
+                            <a th:href="@{'/question/'+${question.id}}" th:text="${question.title}"></a>
+                        </h5>
+                        <span class="text-desc">[[${question.user.name}]] ∙ [[${question.commentCount}]]回复 ∙ [[${question.viewCount}]]浏览 ∙ [[${question.likeCount}]]点赞 ∙ [[${#dates.format(question.gmtCreate, 'yyyy-MM-dd HH:mm')}]]</span>
+                    </div>
                 </div>
-                <div class="flex-grow-1 ms-3">
-                    <h5>
-                        <a th:href="@{'/question/'+${question.id}}" th:text="${question.title}"></a>
-                    </h5>
-                    <span class="text-desc">[[${question.user.name}]] ∙ [[${question.commentCount}]]回复 ∙ [[${question.viewCount}]]浏览 ∙ [[${question.likeCount}]]点赞 ∙ [[${#dates.format(question.gmtCreate, 'yyyy-MM-dd HH:mm')}]]</span>
-                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item" th:if="${pagination.showFirstPage == true}">
+                            <a class="page-link" href="@{'/profile/'+${section}+'/?page=1'" aria-label="First">
+                                <span aria-hidden="true">首页</span>
+                            </a>
+                        </li>
+                        <li class="page-item" th:if="${pagination.showPrevious == true}">
+                            <a class="page-link" href="#"
+                               th:href="@{'/profile/'+${section}(page = ${pagination.currentPage - 1})}"
+                               aria-label="Previous">
+                                <span aria-hidden="true">上一页</span>
+                            </a>
+                        </li>
+                        <li class="page-item"
+                            th:class="${pagination.currentPage == page} ? 'page-item active' : 'page-item'"
+                            th:each="page : ${pagination.pages}">
+                            <a class="page-link" href="#"
+                               th:href="@{'/profile/'+${section}(page=${page})}">[[${page}]]</a>
+                        </li>
+                        <li class="page-item" th:if="${pagination.showNext == true}">
+                            <a class="page-link" href="#"
+                               th:href="@{'/profile/'+${section}(page = ${pagination.currentPage + 1})}"
+                               aria-label="Next">
+                                <span aria-hidden="true">下一页</span>
+                            </a>
+                        </li>
+                        <li class="page-item" th:if="${pagination.showLastPage == true}">
+                            <a class="page-link" href="#"
+                               th:href="@{'/profile/'+${section}(page = ${pagination.totalPage})}" aria-label="Last">
+                                <span aria-hidden="true">末页</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item" th:if="${pagination.showFirstPage == true}">
-                        <a class="page-link" href="@{'/profile/'+${section}+'/?page=1'" aria-label="First">
-                            <span aria-hidden="true">首页</span>
-                        </a>
-                    </li>
-                    <li class="page-item" th:if="${pagination.showPrevious == true}">
-                        <a class="page-link" href="#"
-                           th:href="@{'/profile/'+${section}(page = ${pagination.currentPage - 1})}"
-                           aria-label="Previous">
-                            <span aria-hidden="true">上一页</span>
-                        </a>
-                    </li>
-                    <li class="page-item"
-                        th:class="${pagination.currentPage == page} ? 'page-item active' : 'page-item'"
-                        th:each="page : ${pagination.pages}">
-                        <a class="page-link" href="#" th:href="@{'/profile/'+${section}(page=${page})}">[[${page}]]</a>
-                    </li>
-                    <li class="page-item" th:if="${pagination.showNext == true}">
-                        <a class="page-link" href="#"
-                           th:href="@{'/profile/'+${section}(page = ${pagination.currentPage + 1})}"
-                           aria-label="Next">
-                            <span aria-hidden="true">下一页</span>
-                        </a>
-                    </li>
-                    <li class="page-item" th:if="${pagination.showLastPage == true}">
-                        <a class="page-link" href="#"
-                           th:href="@{'/profile/'+${section}(page = ${pagination.totalPage})}" aria-label="Last">
-                            <span aria-hidden="true">末页</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+            <div class="col-xl-12 " th:if="${section == 'replies'}">
+                123
+            </div>
         </div>
         <div class="col-xl-3 ">
             <div class="list-group section">
@@ -67,7 +73,7 @@
                 <a href="/profile/replies" class="list-group-item list-group-item-action"
                    th:class="${section == 'replies'} ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'">
                     我收到的回复
-                    <span class="badge bg-primary rounded-pill">2</span>
+                    <span class="badge bg-primary rounded-pill" th:text="${unreadCount}">2</span>
                 </a>
             </div>
         </div>

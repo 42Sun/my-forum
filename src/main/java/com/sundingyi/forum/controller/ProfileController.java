@@ -2,6 +2,7 @@ package com.sundingyi.forum.controller;
 
 import com.sundingyi.forum.dto.PaginationDTO;
 import com.sundingyi.forum.model.User;
+import com.sundingyi.forum.service.NotificationService;
 import com.sundingyi.forum.service.QuestionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class ProfileController {
     final QuestionService questionService;
+    final NotificationService notificationService;
     
-    public ProfileController(QuestionService questionService) {
+    public ProfileController(QuestionService questionService, NotificationService notificationService) {
         this.questionService = questionService;
+        this.notificationService = notificationService;
     }
     
     
@@ -32,14 +35,16 @@ public class ProfileController {
         }
         if ("questions".equals(action)) {
             model.addAttribute("sectionName", "我的提问");
+            PaginationDTO paginationDTO = questionService.list(user.getId(), page, size);
+            model.addAttribute("pagination", paginationDTO);
         }
         if ("replies".equals(action)) {
+            PaginationDTO paginationDTO = notificationService.list(user.getId(), page, size);
+            model.addAttribute("pagination", paginationDTO);
             model.addAttribute("sectionName", "最新回复");
         }
         model.addAttribute("section", action);
-        
-        PaginationDTO paginationDTO = questionService.list(user.getId(), page, size);
-        model.addAttribute("pagination", paginationDTO);
+    
         return "profile";
     }
     
