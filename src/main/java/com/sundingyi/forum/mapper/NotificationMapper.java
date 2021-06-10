@@ -2,11 +2,10 @@ package com.sundingyi.forum.mapper;
 
 import com.sundingyi.forum.model.Notification;
 import com.sundingyi.forum.model.NotificationExample;
-
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+
+import java.util.List;
 
 public interface NotificationMapper {
     /**
