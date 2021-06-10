@@ -31,3 +31,7 @@ a:hover {
     color: #999999;
     text-decoration: underline;
 }
+
+.badge {
+    margin-right: 3px;
+}
