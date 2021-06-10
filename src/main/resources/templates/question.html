@@ -18,8 +18,10 @@
             <div class="col-xl-12 ">
                 [[${question.description}]]
             </div>
-            <span class="badge bg-info text-dark" th:each="tag : ${question.tag.split(',')}"
-                  th:text="${tag}">Info</span>
+            <div th:if="${question.tag != null}">
+                <span class="badge bg-info text-dark" th:each="tag : ${question.tag.split(',')}"
+                      th:text="${tag}"></span>
+            </div>
             <br>
             <a th:if="${session.githubUser != null && session.githubUser.id == question.creator}"
                th:href="@{'/publish/' + ${question.id}}"> <i class="bi bi-pencil"></i>修改</a>

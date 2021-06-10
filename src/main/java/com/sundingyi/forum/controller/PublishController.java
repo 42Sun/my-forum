@@ -37,8 +37,8 @@ public class PublishController {
         model.addAttribute("title", title);
         model.addAttribute("description", description);
         model.addAttribute("tag", tag);
-        if ("".equals(title) || "".equals(description) || "".equals(tag)) {
-            model.addAttribute("error", "请不要留空！");
+        if ("".equals(title)) {
+            model.addAttribute("error", "标题不能为空！");
             return "publish";
         }
         User user = (User) httpServletRequest.getSession().getAttribute("githubUser");
@@ -48,13 +48,18 @@ public class PublishController {
         }
         Question question = new Question();
         question.setTitle(title);
-        question.setDescription(description);
-        question.setTag(tag);
+        if (!description.isEmpty()) {
+            question.setDescription(description);
+        }
+        if (!tag.isEmpty()) {
+            question.setTag(tag);
+        }
+    
         question.setCreator(user.getId());
         question.setId(id);
         questionService.createOrUpdate(question);
     
-        return "redirect:/";
+        return "redirect:/question/" + id;
     }
     
     @GetMapping("/publish/{id}")
