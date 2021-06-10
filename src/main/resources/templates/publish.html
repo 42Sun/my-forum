@@ -26,7 +26,7 @@
                 <div class="mb-3">
                     <label for="tag" class="form-label">标签</label>
                     <input type="text" class="form-control" id="tag" name="tag" th:value="${tag}"
-                           placeholder="在这里输入标签，用 ',' 隔开">
+                           placeholder="在这里输入标签，用空格隔开">
                 </div>
                 <div class="alert alert-warning" role="alert" th:text="${error}" th:if="${error != null}">
                 </div>

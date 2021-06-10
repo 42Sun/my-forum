@@ -19,7 +19,7 @@
                 [[${question.description}]]
             </div>
             <div th:if="${question.tag != null}">
-                <span class="badge bg-info text-dark" th:each="tag : ${question.tag.split(',')}"
+                <span class="badge bg-info text-dark" th:each="tag : ${question.tag.split(' ')}"
                       th:text="${tag}"></span>
             </div>
             <br>

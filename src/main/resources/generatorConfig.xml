@@ -33,7 +33,7 @@
 
         <table tableName="comment" domainObjectName="Comment"/>
         <table tableName="question" domainObjectName="Question"/>
-
+        <table tableName="notification" domainObjectName="Notification"/>
         <table tableName="user" domainObjectName="User"/>
 
     </context>
