@@ -38,6 +38,7 @@ public class NotificationService {
         PaginationDTO<NotificationDTO> paginationDTO = new PaginationDTO<>();
         NotificationExample example = new NotificationExample();
         example.createCriteria().andReceiverEqualTo(id);
+        example.setOrderByClause("gmt_create desc");
         List<Notification> notificationList = notificationMapper.selectByExampleWithRowbounds(example, new RowBounds(offset, size));
         if (notificationList.size() == 0) {
             return paginationDTO;
