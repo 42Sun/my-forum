@@ -3,6 +3,7 @@ package com.sundingyi.forum.interceptor;
 import com.sundingyi.forum.mapper.UserMapper;
 import com.sundingyi.forum.model.User;
 import com.sundingyi.forum.model.UserExample;
+import com.sundingyi.forum.service.NotificationService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -13,11 +14,12 @@ import java.util.List;
 
 @Service
 public class SessionInteceptor implements HandlerInterceptor {
-    final
-    UserMapper userMapper;
+    private final UserMapper userMapper;
+    private final NotificationService notificationService;
     
-    public SessionInteceptor(UserMapper userMapper) {
+    public SessionInteceptor(UserMapper userMapper, NotificationService notificationService) {
         this.userMapper = userMapper;
+        this.notificationService = notificationService;
     }
     
     
@@ -33,6 +35,8 @@ public class SessionInteceptor implements HandlerInterceptor {
                     List<User> users = userMapper.selectByExample(userExample);
                     if (users.size() != 0) {
                         httpServletRequest.getSession().setAttribute("githubUser", users.get(0));
+                        Long unreadCount = notificationService.unreadCount(users.get(0).getId());
+                        httpServletRequest.getSession().setAttribute("unreadCount", unreadCount);
                     }
                     break;
                 }
