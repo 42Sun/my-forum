@@ -1,7 +1,15 @@
 # my-forum
 
-从零实现一个论坛
-
+## Technology stack
+- Spring Boot
+- MyBatis
+- MyBatis Generator
+- MySQL
+- FlywayLombok
+- Bootstrap
+- Github OAuth
+## Script
+### Build the Database
 `mvn flyway:migrate`
-
+### Mybatis-generator
 `mvn mybatis-generator:generate`
