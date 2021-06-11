@@ -62,8 +62,11 @@
             </div>
             <div class="col-xl-12 " th:if="${section == 'replies'}">
                 <div th:each="notification : ${pagination.getData()}">
-                    <span th:text="${#dates.format(notification.gmtCreate, 'yyyy-MM-dd HH:mm')} + ' '+ ${notification.notifier.getName() }+ ' ' +${notification.type} + ' '"></span>
+                    <span th:text="${notification.notifier.getName() }+ ' ' +${notification.type} + ' '"></span>
                     <a th:href="@{'/notification/'} + ${notification.id}" th:text="${notification.outerTitle}"></a>
+                    <span class="text-desc"
+                          th:text="${#dates.format(notification.gmtCreate, 'yyyy-MM-dd HH:mm')}"></span>
+                    <span th:if="${notification.getStatus() == 0}">未读</span>
                 </div>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
