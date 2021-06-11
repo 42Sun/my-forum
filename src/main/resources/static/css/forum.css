@@ -35,3 +35,7 @@ a:hover {
 .badge {
     margin-right: 3px;
 }
+
+.content {
+    white-space: pre-wrap;
+}
