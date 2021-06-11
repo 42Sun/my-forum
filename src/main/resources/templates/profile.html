@@ -61,7 +61,45 @@
                 </nav>
             </div>
             <div class="col-xl-12 " th:if="${section == 'replies'}">
-                123
+                <div th:each="notification : ${pagination.getData()}">
+                    <span th:text="${#dates.format(notification.gmtCreate, 'yyyy-MM-dd HH:mm')} + ' '+ ${notification.notifier.getName() }+ ' ' +${notification.type} + ' '"></span>
+                    <a th:href="@{'/notification/'} + ${notification.id}" th:text="${notification.outerTitle}"></a>
+                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item" th:if="${pagination.showFirstPage == true}">
+                            <a class="page-link" href="@{'/profile/'+${section}+'/?page=1'" aria-label="First">
+                                <span aria-hidden="true">首页</span>
+                            </a>
+                        </li>
+                        <li class="page-item" th:if="${pagination.showPrevious == true}">
+                            <a class="page-link" href="#"
+                               th:href="@{'/profile/'+${section}(page = ${pagination.currentPage - 1})}"
+                               aria-label="Previous">
+                                <span aria-hidden="true">上一页</span>
+                            </a>
+                        </li>
+                        <li class="page-item"
+                            th:class="${pagination.currentPage == page} ? 'page-item active' : 'page-item'"
+                            th:each="page : ${pagination.pages}">
+                            <a class="page-link" href="#"
+                               th:href="@{'/profile/'+${section}(page=${page})}">[[${page}]]</a>
+                        </li>
+                        <li class="page-item" th:if="${pagination.showNext == true}">
+                            <a class="page-link" href="#"
+                               th:href="@{'/profile/'+${section}(page = ${pagination.currentPage + 1})}"
+                               aria-label="Next">
+                                <span aria-hidden="true">下一页</span>
+                            </a>
+                        </li>
+                        <li class="page-item" th:if="${pagination.showLastPage == true}">
+                            <a class="page-link" href="#"
+                               th:href="@{'/profile/'+${section}(page = ${pagination.totalPage})}" aria-label="Last">
+                                <span aria-hidden="true">末页</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
         <div class="col-xl-3 ">
