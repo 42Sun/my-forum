@@ -1,6 +1,6 @@
 # my-forum
 
-## Technology stack
+## 技术栈
 - Spring Boot
 - MyBatis
 - MyBatis Generator
@@ -8,8 +8,8 @@
 - FlywayLombok
 - Bootstrap
 - Github OAuth
-## Script
-### Build the Database
+## 命令
+### 构建数据库
 `mvn flyway:migrate`
 ### Mybatis-generator
 `mvn mybatis-generator:generate`
